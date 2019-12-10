@@ -9,4 +9,15 @@ services:
     container_name: inMemoryCRUDContainer
     ports:
       - "8082:8082"
+    depends_on:
+      - custom_nginx
+
+  custom_nginx:
+    build:
+      context: ./nginx
+      dockerfile: CustomNginxDockerfile.Dockerfile
+    image: shubhamtricon/custom_nginx:0.1
+    container_name: custom_nginx_container
+    ports:
+      - "8095:80"
             
