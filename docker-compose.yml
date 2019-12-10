@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  inMemoryCRUDapp:
+    build:
+      context: .
+      dockerfile: InMemoryCRUDDockerfile.Dockerfile
+    image: shubhamtricon/in_memory_crud_image:0.1
+    container_name: inMemoryCRUDContainer
+    ports:
+      - "8082:8082"
+            
