@@ -11,10 +11,17 @@ dist: trusty
 install:
   - mvn -DskipTests=true install
 
+before_script:
+  - echo "aws ecr login starts...."
+  - pip install --user awscli # install aws cli w/o sudo
+  - export PATH=$PATH:$HOME/.local/bin # put aws in the path
+  - eval $(aws ecr get-login --region us-east-1) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+  - echo "aws login done"
+
 script:
   - docker-compose build
   - echo "docker image build successfully"
-  - docker tag shubhamtricon/in_memory_crud_image:0.1 373255439821.dkr.ecr.ap-south-1.amazonaws.com/user-details
+  - docker tag shubhamtricon/in_memory_crud_image:0.1 373255439821.dkr.ecr.ap-south-1.amazonaws.com/user-details:0.2
   - echo "in_memory_crud_image image successfullty tagged"
   - docker push 373255439821.dkr.ecr.ap-south-1.amazonaws.com/user-details
   - echo "in_memory_crud_image image succussfully pushed"
