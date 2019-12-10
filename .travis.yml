@@ -17,8 +17,6 @@ install:
 script:
   - docker-compose build
   - echo "docker image build successfully"
-
-after_script:
   - echo "aws ecr login starts...."
   - pip install --user awscli # install aws cli w/o sudo
   - export PATH=$PATH:$HOME/.local/bin # put aws in the path
