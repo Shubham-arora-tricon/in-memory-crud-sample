@@ -24,8 +24,6 @@ after_script:
   - export PATH=$PATH:$HOME/.local/bin # put aws in the path
   - eval $(aws ecr get-login --region ap-south-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
   - echo "aws login done"
-
-after_success:
   - docker tag shubhamtricon/in_memory_crud_image:0.1 $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details:$TRAVIS_BUILD_ID
   - echo "in_memory_crud_image image successfullty tagged"
   - docker push $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details
