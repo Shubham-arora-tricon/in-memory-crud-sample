@@ -14,3 +14,7 @@ install:
 script:
   - docker-compose build
   - echo "docker image build successfully"
+  - docker tag shubhamtricon/in_memory_crud_image:0.1 373255439821.dkr.ecr.ap-south-1.amazonaws.com/user-details
+  - echo "in_memory_crud_image image successfullty tagged"
+  - docker push 373255439821.dkr.ecr.ap-south-1.amazonaws.com/user-details
+  - echo "in_memory_crud_image image succussfully pushed"
