@@ -14,19 +14,24 @@ dist: trusty
 install:
   - mvn -DskipTests=true install
 
-script:
-  - docker-compose build
-  - echo "docker image build successfully"
-  - echo "aws ecr login starts...."
-  - pip install --user awscli # install aws cli w/o sudo
-  - export PATH=$PATH:$HOME/.local/bin # put aws in the path
-  - eval $(aws ecr get-login --region ap-south-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
-  - echo "aws login done"
-  - docker tag shubhamtricon/in_memory_crud_image:0.1 $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details:$TRAVIS_BUILD_ID
-  - echo "in_memory_crud_image image successfullty tagged"
-  - docker push $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details
-  - echo "in_memory_crud_image image succussfully pushed"
-  - docker tag shubhamtricon/custom_nginx:0.1 $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/custom-nginx:$TRAVIS_BUILD_ID
-  - echo "custom_nginx image successfullty tagged"
-  - docker push $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/custom-nginx
-  - echo "custom_nginx image succussfully pushed"
+jobs:
+  include:
+    - stage: build
+      script:
+        - docker-compose build
+        - echo "docker image build successfully"
+        - echo "aws ecr login starts...."
+        - pip install --user awscli # install aws cli w/o sudo
+        - export PATH=$PATH:$HOME/.local/bin # put aws in the path
+        - eval $(aws ecr get-login --region ap-south-1 --no-include-email) #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+        - echo "aws login done"
+        - docker tag shubhamtricon/in_memory_crud_image:0.1 $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details:$TRAVIS_BUILD_ID
+        - echo "in_memory_crud_image image successfullty tagged"
+        - docker push $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details
+        - echo "in_memory_crud_image image succussfully pushed"
+        - docker tag shubhamtricon/custom_nginx:0.1 $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/custom-nginx:$TRAVIS_BUILD_ID
+        - echo "custom_nginx image successfullty tagged"
+        - docker push $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/custom-nginx
+        - echo "custom_nginx image succussfully pushed"
+        - echo Writing image definitions file...
+        - printf '[{"imageUri":"%s"}]' $AWS_ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/user-details:$TRAVIS_BUILD_ID > imagedefinitions.json
