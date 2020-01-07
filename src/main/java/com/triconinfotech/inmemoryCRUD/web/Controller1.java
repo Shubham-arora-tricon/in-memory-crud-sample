@@ -1,11 +1,13 @@
 package com.triconinfotech.inmemoryCRUD.web;
 
 import com.triconinfotech.inmemoryCRUD.entity.User;
+import com.triconinfotech.inmemoryCRUD.entity.student.SchoolInfo;
 import com.triconinfotech.inmemoryCRUD.service.Service1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 @RestController
 public class Controller1 {
@@ -34,5 +36,11 @@ public class Controller1 {
     @ResponseBody
     String updateUserDetail(@RequestBody User user) {
         return service1.updateUserdetails(user);
+    }
+
+    @RequestMapping(value = "/v1", method = RequestMethod.POST)
+    @ResponseBody
+    public OptionalInt addUserDetail(@RequestBody SchoolInfo schoolInfo) {
+        return service1.addSchool(schoolInfo);
     }
 }
